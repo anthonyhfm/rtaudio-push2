@@ -86,6 +86,22 @@ class AudioTap: NSObject {
         "com.apple.Safari",
     ]
 
+    var isPush2DisplayConnected: Bool {
+        bridge.isPush2DisplayConnected()
+    }
+
+    func startPush2Display() {
+        bridge.startPush2Display()
+    }
+
+    func stopPush2Display() {
+        bridge.stopPush2Display()
+    }
+
+    func updatePush2DisplayColors(top: SIMD3<Float>, bottom: SIMD3<Float>) {
+        bridge.setPush2DisplayColorTop(top, bottom: bottom)
+    }
+
     // Helper function to smooth out the magnitudes for prettifying purposes
     func getSmoothedMagnitudes() -> simd_float4 {
         // Zero bridging overhead. Just passing 16 bytes of memory.
@@ -221,6 +237,7 @@ class AudioTap: NSObject {
     }
 
     deinit {
+        stopPush2Display()
         stopCapture()
     }
 }

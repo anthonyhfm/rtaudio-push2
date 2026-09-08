@@ -78,11 +78,25 @@ Benchmarks using "Release" build mode currently show:
 
 - macOS 14.2+ (Required for public `AudioHardwareCreateProcessTap` support)
 - Xcode 15+
+- Ableton Push 2 (optional; its 960×160 display becomes the primary waveform output)
 
 ### Building & Running
 
-1. Clone the repository and open `rtaudio.xcodeproj` in Xcode.
+1. Clone the repository including libusb and open `rtaudio.xcodeproj` in Xcode:
+   `git clone --recurse-submodules <repository-url>`
 2. Build and Run (`Cmd + R`).
+
+For an existing clone, fetch the dependency once with
+`git submodule update --init --recursive`.
+
+When Push 2 is connected, rtaudio discovers USB vendor/product `2982:1967`, claims
+display interface 0, and renders a full-width, auto-gained time-domain waveform at
+about 30 FPS. It reconnects automatically when the controller is attached later.
+The implementation follows Ableton's official
+[`push2-display-with-juce`](https://github.com/Ableton/push2-display-with-juce)
+protocol code but keeps JUCE out of the app; only libusb is used for transport.
+The corresponding Ableton license notice is included in
+`ThirdParty/AbletonPush2Display.LICENSE`.
 
 > **Tip:** macOS treats kernel-level audio taps exactly like physical microphones. The OS will automatically prompt you for Microphone permissions on the first run. You may need to restart the app after granting permission!
 

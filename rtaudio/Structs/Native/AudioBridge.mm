@@ -8,17 +8,36 @@
 
 #import "AudioBridge.h"
 #import "AudioProcessor.hpp"
+#import "Push2DisplayOutput.hpp"
 
 @implementation AudioBridge {
     AudioProcessor *processor;
+    Push2DisplayOutput *push2Display;
 }
 
 - (instancetype)init {
     self = [super init];
     if (self) {
         processor = new AudioProcessor();
+        push2Display = new Push2DisplayOutput(*processor);
     }
     return self;
+}
+
+- (void)startPush2Display {
+    push2Display->start();
+}
+
+- (void)stopPush2Display {
+    push2Display->stop();
+}
+
+- (BOOL)isPush2DisplayConnected {
+    return push2Display->isConnected();
+}
+
+- (void)setPush2DisplayColorTop:(simd_float3)top bottom:(simd_float3)bottom {
+    push2Display->setColors(top.x, top.y, top.z, bottom.x, bottom.y, bottom.z);
 }
 
 - (void)processBuffer:(const float *)buffer count:(int)count {
@@ -37,6 +56,7 @@
 }
 
 - (void)dealloc {
+    delete push2Display;
     delete processor;
 }
 

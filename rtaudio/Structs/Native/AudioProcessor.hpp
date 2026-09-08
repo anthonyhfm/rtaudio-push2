@@ -9,6 +9,7 @@ class AudioProcessor {
 private:
     static constexpr int   kBlockSize = 512;   // lower latency than 1024
     static constexpr int   kBands     = 4;
+    static constexpr int   kWaveformSamples = 240;
     static constexpr float kAttack    = 0.85f; // fast rise
     static constexpr float kRelease   = 0.40f; // slower fall — more musical
     static constexpr float kGains[kBands] = {3.5f, 6.0f, 9.0f, 20.0f};
@@ -26,6 +27,7 @@ private:
     // Lock-free: audio thread writes, render thread reads
     // One atomic per band — fits in a cache line
     alignas(64) std::atomic<float> bandParams[kBands] = {};
+    alignas(64) std::atomic<float> waveformParams[kWaveformSamples] = {};
 
 public:
     explicit AudioProcessor(float sr = 48000.0f) : sampleRate(sr) {
@@ -67,10 +69,23 @@ public:
         return bandParams[i].load(std::memory_order_relaxed);
     }
 
+    static constexpr int waveformSampleCount() { return kWaveformSamples; }
+
+    float getWaveformSample(int i) const {
+        return waveformParams[i].load(std::memory_order_relaxed);
+    }
+
 private:
     enum class FilterType { LowPass, BandPass, HighPass };
 
     void processBlock() {
+        // Publish a decimated time-domain snapshot for the Push 2 display.
+        // Atomic stores keep the CoreAudio callback lock-free and allocation-free.
+        for (int i = 0; i < kWaveformSamples; ++i) {
+            const int sampleIndex = (i * (kBlockSize - 1)) / (kWaveformSamples - 1);
+            waveformParams[i].store(mono[sampleIndex], std::memory_order_relaxed);
+        }
+
         for (int i = 0; i < kBands; ++i) {
             vDSP_biquad(setups[i], delays[i], mono, 1, filtered, 1, kBlockSize);
 

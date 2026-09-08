@@ -9,11 +9,15 @@
 /* Begin PBXBuildFile section */
 		264F33942F64499800C1E2AB /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 264F33932F64499800C1E2AB /* Sparkle */; };
 		266C88832F605EEB00139B20 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 266C88822F605EEB00139B20 /* Accelerate.framework */; };
+		50A100012F70000100A10001 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50A100032F70000100A10001 /* IOKit.framework */; };
+		50A100022F70000100A10001 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50A100042F70000100A10001 /* CoreFoundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		266C88662F605B8600139B20 /* rtaudio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = rtaudio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		266C88822F605EEB00139B20 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		50A100032F70000100A10001 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		50A100042F70000100A10001 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -43,6 +47,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				266C88832F605EEB00139B20 /* Accelerate.framework in Frameworks */,
+				50A100012F70000100A10001 /* IOKit.framework in Frameworks */,
+				50A100022F70000100A10001 /* CoreFoundation.framework in Frameworks */,
 				264F33942F64499800C1E2AB /* Sparkle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -71,6 +77,8 @@
 			isa = PBXGroup;
 			children = (
 				266C88822F605EEB00139B20 /* Accelerate.framework */,
+				50A100032F70000100A10001 /* IOKit.framework */,
+				50A100042F70000100A10001 /* CoreFoundation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -213,6 +221,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/ThirdParty/libusb/libusb",
+					"$(PROJECT_DIR)/rtaudio/Structs/Native/libusb",
+				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -272,6 +284,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/ThirdParty/libusb/libusb",
+					"$(PROJECT_DIR)/rtaudio/Structs/Native/libusb",
+				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.6;
 				MTL_ENABLE_DEBUG_INFO = NO;

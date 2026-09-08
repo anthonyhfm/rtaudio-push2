@@ -263,6 +263,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
 
         panel.makeKeyAndOrderFront(nil)
 
+        // The Push display is the primary, always-on waveform output. Its USB
+        // worker reconnects automatically when the controller is plugged in.
+        audioTap.startPush2Display()
+
         setupMusicObserver()
         updateArtworkColor()
 
@@ -341,6 +345,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             // Push the colors to the Metal View once
             await MainActor.run {
                 self.metalView.updateColors(top: top, bottom: bottom)
+                self.audioTap.updatePush2DisplayColors(top: top, bottom: bottom)
             }
         }
     }
@@ -352,9 +357,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             audioTap.isPaused = false
             metalView.isVisualizerPaused = false
         } else {
-            audioTap.isPaused = true
+            // Keep capture alive for Push 2 even while the desktop overlay is hidden.
+            audioTap.isPaused = false
             metalView.isVisualizerPaused = true
         }
+    }
+
+    func applicationWillTerminate(_ notification: Notification) {
+        audioTap.stopPush2Display()
+        audioTap.stopCapture()
     }
 
     func windowDidMove(_ notification: Notification) {
